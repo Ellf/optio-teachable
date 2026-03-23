@@ -14,6 +14,7 @@ import { z } from 'zod';
 /**
  * Standard pagination metadata returned by Teachable list endpoints.
  */
+/** @hidden */
 export const PaginationMetaSchema = z.object({
     total: z.number().optional(),
     page: z.number().optional(),
@@ -24,7 +25,7 @@ export const PaginationMetaSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link PaginationMetaSchema}. */
-export type PaginationMeta = z.infer<typeof PaginationMetaSchema>;
+export interface PaginationMeta extends z.infer<typeof PaginationMetaSchema> {}
 
 // ---------------------------------------------------------------------------
 // Users
@@ -34,6 +35,7 @@ export type PaginationMeta = z.infer<typeof PaginationMetaSchema>;
  * A basic user object as returned in search result lists.
  * Name may be null as Teachable does not always populate this field.
  */
+/** @hidden */
 export const BasicUserSchema = z.object({
     id: z.number(),
     email: z.email(),
@@ -41,24 +43,26 @@ export const BasicUserSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link BasicUserSchema}. */
-export type BasicUser = z.infer<typeof BasicUserSchema>;
+export interface BasicUser extends z.infer<typeof BasicUserSchema> {}
 
 /**
  * The paginated wrapper object returned by Teachable user search endpoints.
  * Contains an array of basic users and optional pagination metadata.
  */
+/** @hidden */
 export const UserSearchResponseSchema = z.object({
     users: z.array(BasicUserSchema),
     meta: PaginationMetaSchema.optional(),
 });
 
 /** Inferred TypeScript type for {@link UserSearchResponseSchema}. */
-export type UserSearchResponse = z.infer<typeof UserSearchResponseSchema>;
+export interface UserSearchResponse extends z.infer<typeof UserSearchResponseSchema> {}
 
 /**
  * A detailed user object as returned from the `/users/:id` endpoint.
  * Includes role, sign-in metadata, and an optional list of course enrolments.
  */
+/** @hidden */
 export const UserDetailSchema = z.object({
     id: z.number(),
     email: z.string(),
@@ -78,7 +82,7 @@ export const UserDetailSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link UserDetailSchema}. */
-export type UserDetail = z.infer<typeof UserDetailSchema>;
+export interface UserDetail extends z.infer<typeof UserDetailSchema> {}
 
 // ---------------------------------------------------------------------------
 // Transactions
@@ -94,6 +98,7 @@ export type UserDetail = z.infer<typeof UserDetailSchema>;
  * Several fields are nullable as Teachable may omit or null them depending
  * on the transaction type (e.g. refunds, affiliate transactions, chargebacks).
  */
+/** @hidden */
 export const TransactionSchema = z.object({
     id: z.number(),
     user_id: z.number(),
@@ -127,20 +132,21 @@ export const TransactionSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link TransactionSchema}. */
-export type Transaction = z.infer<typeof TransactionSchema>;
+export interface Transaction extends z.infer<typeof TransactionSchema> {}
 
 /**
  * The paginated wrapper object returned by Teachable transaction endpoints.
  * Includes full pagination metadata: total records, current page, page range,
  * results per page, and total number of pages.
  */
+/** @hidden */
 export const TransactionsResponseSchema = z.object({
     transactions: z.array(TransactionSchema),
     meta: PaginationMetaSchema.optional(),
 });
 
 /** Inferred TypeScript type for {@link TransactionsResponseSchema}. */
-export type TransactionsResponse = z.infer<typeof TransactionsResponseSchema>;
+export interface TransactionsResponse extends z.infer<typeof TransactionsResponseSchema> {}
 
 // ---------------------------------------------------------------------------
 // Courses
@@ -151,6 +157,7 @@ export type TransactionsResponse = z.infer<typeof TransactionsResponseSchema>;
  * Uses `z.looseObject` to allow undocumented fields from the Teachable
  * API to pass through without causing validation failures.
  */
+/** @hidden */
 export const CourseSchema = z.looseObject({
     id: z.number(),
     name: z.string().nullable().optional(),
@@ -161,12 +168,13 @@ export const CourseSchema = z.looseObject({
 });
 
 /** Inferred TypeScript type for {@link CourseSchema}. */
-export type Course = z.infer<typeof CourseSchema>;
+export interface Course extends z.infer<typeof CourseSchema> {}
 
 /**
  * A single lecture section within a course, containing an ordered
  * list of lectures.
  */
+/** @hidden */
 export const LectureSectionSchema = z.object({
     id: z.number(),
     name: z.string().optional(),
@@ -180,11 +188,12 @@ export const LectureSectionSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link LectureSectionSchema}. */
-export type LectureSection = z.infer<typeof LectureSectionSchema>;
+export interface LectureSection extends z.infer<typeof LectureSectionSchema> {}
 
 /**
  * The author bio attached to a detailed course response.
  */
+/** @hidden */
 export const AuthorBioSchema = z.object({
     user_id: z.number().optional(),
     name: z.string().optional(),
@@ -193,12 +202,13 @@ export const AuthorBioSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link AuthorBioSchema}. */
-export type AuthorBio = z.infer<typeof AuthorBioSchema>;
+export interface AuthorBio extends z.infer<typeof AuthorBioSchema> {}
 
 /**
  * A detailed course object as returned from the `/courses/:id` endpoint.
  * Extends the base {@link CourseSchema} with lecture sections and author bio.
  */
+/** @hidden */
 export const CourseDetailSchema = z.object({
     id: z.number(),
     name: z.string().nullable().optional(),
@@ -211,21 +221,23 @@ export const CourseDetailSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link CourseDetailSchema}. */
-export type CourseDetail = z.infer<typeof CourseDetailSchema>;
+export interface CourseDetail extends z.infer<typeof CourseDetailSchema> {}
 
 /**
  * Wrapper for the `/courses/:id` endpoint response.
  */
+/** @hidden */
 export const CourseDetailResponseSchema = z.object({
     course: CourseDetailSchema,
 });
 
 /** Inferred TypeScript type for {@link CourseDetailResponseSchema}. */
-export type CourseDetailResponse = z.infer<typeof CourseDetailResponseSchema>;
+export interface CourseDetailResponse extends z.infer<typeof CourseDetailResponseSchema> {}
 
 /**
  * A single quiz question within a lecture attachment.
  */
+/** @hidden */
 export const QuizQuestionSchema = z.object({
     question: z.string().optional(),
     question_type: z.string().optional(),
@@ -235,12 +247,13 @@ export const QuizQuestionSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link QuizQuestionSchema}. */
-export type QuizQuestion = z.infer<typeof QuizQuestionSchema>;
+export interface QuizQuestion extends z.infer<typeof QuizQuestionSchema> {}
 
 /**
  * An attachment on a lecture, which may include video, text, PDF,
  * or quiz content depending on the `kind` field.
  */
+/** @hidden */
 export const LectureAttachmentSchema = z.object({
     id: z.number(),
     name: z.string().optional(),
@@ -257,12 +270,13 @@ export const LectureAttachmentSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link LectureAttachmentSchema}. */
-export type LectureAttachment = z.infer<typeof LectureAttachmentSchema>;
+export interface LectureAttachment extends z.infer<typeof LectureAttachmentSchema> {}
 
 /**
  * A detailed lecture object as returned from the `/courses/:id/lectures/:id` endpoint.
  * Includes position, section reference, and all attachments.
  */
+/** @hidden */
 export const LectureDetailSchema = z.object({
     id: z.number(),
     name: z.string().optional(),
@@ -273,22 +287,24 @@ export const LectureDetailSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link LectureDetailSchema}. */
-export type LectureDetail = z.infer<typeof LectureDetailSchema>;
+export interface LectureDetail extends z.infer<typeof LectureDetailSchema> {}
 
 /**
  * Wrapper for the `/courses/:id/lectures/:id` endpoint response.
  */
+/** @hidden */
 export const LectureDetailResponseSchema = z.object({
     lecture: LectureDetailSchema,
 });
 
 /** Inferred TypeScript type for {@link LectureDetailResponseSchema}. */
-export type LectureDetailResponse = z.infer<typeof LectureDetailResponseSchema>;
+export interface LectureDetailResponse extends z.infer<typeof LectureDetailResponseSchema> {}
 
 /**
  * A single enrolment record for a course, representing a user's
  * progress and completion status.
  */
+/** @hidden */
 export const EnrolmentSchema = z.object({
     user_id: z.number(),
     enrolled_at: z.string().nullable().optional(),
@@ -298,26 +314,28 @@ export const EnrolmentSchema = z.object({
 });
 
 /** Inferred TypeScript type for {@link EnrolmentSchema}. */
-export type Enrolment = z.infer<typeof EnrolmentSchema>;
+export interface Enrolment extends z.infer<typeof EnrolmentSchema> {}
 
 /**
  * The paginated wrapper returned by the `/courses/:id/enrollments` endpoint.
  */
+/** @hidden */
 export const EnrolmentsResponseSchema = z.object({
     enrollments: z.array(EnrolmentSchema),
     meta: PaginationMetaSchema.optional(),
 });
 
 /** Inferred TypeScript type for {@link EnrolmentsResponseSchema}. */
-export type EnrolmentsResponse = z.infer<typeof EnrolmentsResponseSchema>;
+export interface EnrolmentsResponse extends z.infer<typeof EnrolmentsResponseSchema> {}
 
 /**
  * The paginated wrapper object returned by Teachable course list endpoints.
  */
+/** @hidden */
 export const CoursesResponseSchema = z.object({
     courses: z.array(CourseSchema),
     meta: PaginationMetaSchema.optional(),
 });
 
 /** Inferred TypeScript type for {@link CoursesResponseSchema}. */
-export type CoursesResponse = z.infer<typeof CoursesResponseSchema>;
+export interface CoursesResponse extends z.infer<typeof CoursesResponseSchema> {}
