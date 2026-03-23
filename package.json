@@ -1,0 +1,26 @@
+{
+  "name": "optio-teachable",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A lightweight, strictly-typed Node.js wrapper for the Teachable v1 API. Built on [Zod](https://zod.dev) for runtime schema validation, with full TypeScript support out of the box.",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@zod/core": "^0.11.6",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "dotenv": "^17.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
