@@ -1,6 +1,8 @@
 import { UsersAPI } from './users';
 import { CoursesAPI } from './courses';
 import { TransactionsAPI } from "./transactions";
+import { WebhooksAPI } from "./webhooks";
+import { PricingPlansAPI } from "./pricing_plans";
 import type { $ZodIssue } from '@zod/core';
 
 /**
@@ -16,13 +18,10 @@ import type { $ZodIssue } from '@zod/core';
  * Instantiated automatically by {@link TeachableClient} — you should not
  * need to create this directly.
  *
- * @example
- * // Typically accessed via the root client:
- * const client = new TeachableClient('your-api-key');
- * const users = await client.v1.users.getList();
- *
- * // Debug mode logs all outgoing requests and responses:
- * const v1 = new TeachableV1('your-api-key', true);
+ * @remarks
+ * Consumers should not instantiate this class directly.
+ * Use {@link TeachableClient} instead, which initializes this automatically.
+ * Direct instantiation is only necessary in advanced scenarios.
  */
 export class TeachableV1 {
 
@@ -35,14 +34,18 @@ export class TeachableV1 {
     /** Provides access to transaction-related API operations. */
     public transactions: TransactionsAPI;
 
-    // public enrollments: EnrollmentsAPI;
+    /** Provides access to webhook-related API operations. */
+    public webhooks: WebhooksAPI;
+
+    /** Provides access to pricing plan-related API operations. */
+    public pricingPlans: PricingPlansAPI;
 
     /** The base URL for all Teachable v1 API requests. */
     private baseUrl = 'https://developers.teachable.com/v1';
 
     /**
      * Creates a new TeachableV1 instance, validates the API key,
-     * and initialises all resource sub-clients with the shared fetch layer.
+     * and initializes all resource sub-clients with the shared fetch layer.
      * @param apiKey - Your Teachable API key. Required — throws if empty or missing.
      * @param enableDebug - If `true`, logs all outgoing requests and responses to the console. Defaults to `false`.
      * @throws {Error} If `apiKey` is not provided.
@@ -57,6 +60,8 @@ export class TeachableV1 {
         this.users = new UsersAPI(fetcher);
         this.courses = new CoursesAPI(fetcher);
         this.transactions = new TransactionsAPI(fetcher);
+        this.webhooks = new WebhooksAPI(fetcher);
+        this.pricingPlans = new PricingPlansAPI(fetcher);
     }
 
     /**
@@ -67,6 +72,7 @@ export class TeachableV1 {
      * @template T - The expected return type, inferred from the Zod schema.
      * @param endpoint - The API endpoint path (e.g. `/users?page=1`), appended to the base URL.
      * @param schema - A Zod schema used to parse and validate the raw API response.
+     * both `z.ZodSchema` and `z.ZodObject` variants without additional generics.
      * @returns A promise resolving to the validated response of type `T`.
      * @throws {Error} If the response status is not OK, including the status code and response body.
      *

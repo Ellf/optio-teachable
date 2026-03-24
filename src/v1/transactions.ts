@@ -25,7 +25,7 @@ export class TransactionsAPI {
      * Retrieves a paginated list of transactions with optional filters.
      * All filter parameters are optional and can be combined freely.
      * @param page - The page number to retrieve. Defaults to `1`.
-     * @param per - The number of results per page. Defaults to `20`.
+     * @param per - The number of results per page. Defaults to `20`, maximum: `100`.
      * @param filters - Optional filters to apply to the query.
      * @param filters.userId - If provided, restricts results to transactions belonging to this user.
      * @param filters.affiliateId - If provided, restricts results to transactions for this affiliate.

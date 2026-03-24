@@ -28,7 +28,7 @@ config({ path: resolve(__dirname, '.env') });
  * Tests the following endpoints in sequence:
  * - `users.getList` — paginated user list
  * - `users.getByEmail` — user lookup by email
- * - `courses.getCourses` — paginated course list
+ * - `courses.getList` — paginated course list
  * - `transactions.getList` — paginated transaction list
  *
  * Logs a summary of key fields from each response on success,
@@ -54,6 +54,8 @@ async function runTests() {
         const userFromEmail = await teachable.v1.users.getByEmail("tom@lorimer.email");
         const courseData = await teachable.v1.courses.getList(1, 3);
         const transactionsData = await teachable.v1.transactions.getList(1, 5);
+        const webhooksData = await teachable.v1.webhooks.getList();
+        const pricingPlansData = await teachable.v1.pricingPlans.getList();
 
         console.log("✅ Success! Fetched Data:");
         console.log(`Total Users in Teachable: ${usersData.meta?.total}`);
@@ -61,6 +63,12 @@ async function runTests() {
         console.log(`User's ID from Email: ${userFromEmail.users[0]?.id}`);
         console.log(`First Course Name: ${courseData.courses[0]?.name}`);
         console.log(`First Transaction ID: ${transactionsData.transactions[0]?.id}`);
+        console.log(`Webhooks registered: ${webhooksData.webhooks.length}`);
+        // loop through the webhooks and print the URL
+        webhooksData.webhooks.forEach(webhook => {
+            console.log(`State: ${webhook.workflow_state} | Webhook URL: ${webhook.url} | Count: ${webhook.webhook_events_count}`);
+        })
+        console.log(`First Pricing Plan: ${pricingPlansData.pricing_plans[0]?.name}`);
 
     } catch (error) {
         console.error("❌ Test Failed:");
