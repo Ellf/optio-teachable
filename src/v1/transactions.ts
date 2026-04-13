@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TransactionsResponseSchema, TransactionSchema } from './schemas';
+import { TransactionsResponseSchema } from './schemas';
 
 /**
  * @module TransactionsAPI
@@ -72,18 +72,5 @@ export class TransactionsAPI {
         if (filters.endDate)         params.append('end_date', filters.endDate);
 
         return this.baseFetch(`/transactions?${params.toString()}`, TransactionsResponseSchema);
-    }
-
-    /**
-     * Retrieves a single transaction by its unique numeric ID.
-     * @param id - The unique identifier of the transaction.
-     * @returns A promise resolving to a validated `Transaction` object.
-     * @throws {Error} If no transaction exists with the given ID or the request fails.
-     * @example
-     * const transaction = await transactionsAPI.getById(101);
-     */
-    async getById(id: number) {
-        const endpoint = `/transactions/${id}`;
-        return this.baseFetch(endpoint, TransactionSchema);
     }
 }

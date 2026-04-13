@@ -168,8 +168,16 @@ export const TransactionsResponseSchema = z.object({
 
 /**
  * The paginated wrapper object returned by Teachable transaction endpoints.
- * Includes full pagination metadata: total records, current page, page range,
- * results per page, and total number of pages.
+ * Includes full pagination metadata.
+ *
+ * @remarks
+ * The Teachable v1 API does not provide a single transaction endpoint.
+ * Transactions can only be retrieved via the list endpoint using filters
+ * such as `userId`, `courseId`, or date range.
+ *
+ * **Processing delay** — new transactions can take up to two minutes to
+ * appear via the API from the time of sale. Do not rely on this endpoint
+ * for real-time payment confirmation.
  */
 export interface TransactionsResponse extends z.infer<typeof TransactionsResponseSchema> {}
 
@@ -418,22 +426,7 @@ export const CourseProgressSchema = z.object({
     lecture_sections: z.array(CourseProgressSectionSchema),
 });
 
-/**
- * Progress record for a specific user on a specific course.
- *
- * @remarks
- * **`certificate`** — all certificate fields are `null` until the student
- * meets the course completion requirements and a certificate is issued.
- *
- * **`lecture_sections`** — the shape of individual section progress objects
- * is not yet confirmed from a live response with data. Typed as `unknown[]`
- * until a populated example is available. If you have a response with
- * lecture section progress, please [open an issue](https://github.com/Ellf/optio-teachable/issues).
- *
- * **`percent_complete`** — a value between `0` and `100` representing
- * the student's completion percentage.
- */
-export interface CourseProgress extends z.infer<typeof CourseProgressSchema> {}
+
 
 /** @hidden */
 export const CourseProgressResponseSchema = z.object({
@@ -450,7 +443,6 @@ export const CourseProgressResponseSchema = z.object({
  * from this endpoint to determine whether progress data exists.
  */
 export interface CourseProgressResponse extends z.infer<typeof CourseProgressResponseSchema> {}
-
 
 /**
  * Progress record for a specific user on a specific course.

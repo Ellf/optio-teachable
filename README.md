@@ -85,10 +85,9 @@ All methods return strongly-typed promises validated at runtime via Zod. If the 
 
 ### `teachable.v1.transactions`
 
-| Method                           | Description                                                                                                                                                  |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `getList(page?, per?, filters?)` | Paginated list of transactions. Filter by `userId`, `courseId`, `affiliateId`, `pricingPlanId`, `isFullyRefunded`, `isChargeback`, `startDate`, or `endDate` |
-| `getById(id)`                    | Single transaction by ID                                                                                                                                     |
+| Method                           | Description                                                                                                                                                                                                                |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `getList(page?, per?, filters?)` | Paginated list of transactions. Filter by `userId`, `courseId`, `affiliateId`, `pricingPlanId`, `isFullyRefunded`, `isChargeback`, `startDate`, or `endDate`. Note: new transactions may take up to two minutes to appear. |
 
 ### `teachable.v1.pricingPlans`
 
@@ -162,4 +161,4 @@ This SDK covers every GET endpoint in the Teachable v1 API and intentionally imp
 
 MIT — free to use, modify, and distribute.
 
-Built by [Tom Lorimer](https://purplehippo.co.uk) · [Purple Hippo Web Studio](https://purplehippo.co.uk)
+Built by [Tom Lorimer](https://purplehippo.co.uk) · [Purple Hippo Web Studio](https://purplehippo.io)

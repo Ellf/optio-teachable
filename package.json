@@ -11,10 +11,10 @@
   "homepage": "https://useoptio.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tomlorimer/optio-teachable.git"
+    "url": "https://github.com/Ellf/optio-teachable.git"
   },
   "bugs": {
-    "url": "https://github.com/tomlorimer/optio-teachable/issues"
+    "url": "https://github.com/Ellf/optio-teachable/issues"
   },
   "files": [
     "dist",
