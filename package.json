@@ -1,6 +1,6 @@
 {
   "name": "optio-teachable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight, strictly-typed Node.js wrapper for the Teachable v1 API. Built on [Zod](https://zod.dev) for runtime schema validation, with full TypeScript support out of the box.",
   "keywords": [],
   "license": "MIT",
