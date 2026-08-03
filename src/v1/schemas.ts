@@ -301,6 +301,7 @@ export const LectureAttachmentSchema = z.object({
         'audio',
         'image',
         'pdf',
+        'pdf_embed',
         'quiz',
         'code_display',
         'code_embed',
@@ -334,7 +335,13 @@ export const LectureAttachmentSchema = z.object({
  * | `audio` | filename | CDN URL | `null` | bytes | `null` |
  * | `image` | filename | CDN URL | `null` | bytes | `null` |
  * | `pdf` | filename | CDN URL | `null` | bytes | `null` |
+ * | `pdf_embed` | filename | CDN URL | `null` | `0` | `null` |
  * | `quiz` | `null` | `null` | `null` | `null` | quiz object |
+ *
+ * **`pdf` vs `pdf_embed`** — both are PDF attachments backed by a CDN URL.
+ * `pdf_embed` is returned when the PDF is rendered inline in the lecture player
+ * rather than offered as a download. Observed returning `file_size: 0` and
+ * `file_extension: "pdf"`. Treat the two kinds identically for content purposes.
  *
  * **`text`** — contains raw HTML for `text`, `code_display`, and `code_embed` kinds.
  * Sanitise before rendering directly in a browser context.
