@@ -290,23 +290,76 @@ export const QuizQuestionSchema = z.object({
  */
 export interface QuizQuestion extends z.infer<typeof QuizQuestionSchema> {}
 
+/**
+ * Lecture attachment kinds observed in live Teachable API responses.
+ *
+ * @remarks
+ * **This list is descriptive, not exhaustive.** Teachable's OpenAPI definition
+ * types `kind` as an unconstrained string and enumerates values only by example,
+ * so new kinds can appear at any time without a version change or changelog
+ * entry. `pdf_embed` and `embed` were both discovered this way — neither is
+ * mentioned in the published documentation.
+ *
+ * For that reason {@link LectureAttachmentSchema} validates `kind` as an open
+ * string rather than a closed enum: an unrecognised kind must not fail the parse
+ * and take the entire lecture down with it. Use this array with
+ * {@link isKnownAttachmentKind} when you need to branch on recognised values,
+ * and handle the unknown case explicitly.
+ */
+export const KNOWN_LECTURE_ATTACHMENT_KINDS = [
+    'text',
+    'native_comments',
+    'video',
+    'audio',
+    'image',
+    'pdf',
+    'pdf_embed',
+    'embed',
+    'quiz',
+    'code_display',
+    'code_embed',
+    'upsell',
+] as const;
+
+/**
+ * A lecture attachment `kind`.
+ *
+ * @remarks
+ * Accepts any string, but the members of {@link KNOWN_LECTURE_ATTACHMENT_KINDS}
+ * are surfaced as autocomplete suggestions. The `(string & {})` member is what
+ * keeps those literal suggestions alive while still permitting kinds this SDK
+ * has not seen yet — a plain `string` would collapse the union and lose them.
+ */
+export type LectureAttachmentKind =
+    | (typeof KNOWN_LECTURE_ATTACHMENT_KINDS)[number]
+    | (string & {});
+
+/**
+ * Narrows an attachment `kind` to one this SDK documents.
+ *
+ * @param kind - The `kind` value from a {@link LectureAttachment}.
+ * @returns `true` if the kind appears in {@link KNOWN_LECTURE_ATTACHMENT_KINDS}.
+ *
+ * @example
+ * for (const attachment of lecture.attachments ?? []) {
+ *     if (!isKnownAttachmentKind(attachment.kind)) {
+ *         console.warn(`Unrecognised attachment kind: ${attachment.kind}`);
+ *         continue;
+ *     }
+ *     // attachment.kind is narrowed to the known union here
+ * }
+ */
+export function isKnownAttachmentKind(
+    kind: string,
+): kind is (typeof KNOWN_LECTURE_ATTACHMENT_KINDS)[number] {
+    return (KNOWN_LECTURE_ATTACHMENT_KINDS as readonly string[]).includes(kind);
+}
+
 /** @hidden */
 export const LectureAttachmentSchema = z.object({
     id: z.number(),
     name: z.string().nullable(),
-    kind: z.enum([
-        'text',
-        'native_comments',
-        'video',
-        'audio',
-        'image',
-        'pdf',
-        'pdf_embed',
-        'quiz',
-        'code_display',
-        'code_embed',
-        'upsell',
-    ]),
+    kind: z.custom<LectureAttachmentKind>((v) => typeof v === 'string'),
     url: z.string().nullable().optional(),
     text: z.string().nullable().optional(),
     position: z.number().nullable(),
@@ -336,12 +389,24 @@ export const LectureAttachmentSchema = z.object({
  * | `image` | filename | CDN URL | `null` | bytes | `null` |
  * | `pdf` | filename | CDN URL | `null` | bytes | `null` |
  * | `pdf_embed` | filename | CDN URL | `null` | `0` | `null` |
+ * | `embed` | source URL | embed URL | `null` | absent | `null` |
  * | `quiz` | `null` | `null` | `null` | `null` | quiz object |
+ *
+ * **`kind` is an open string.** The table above covers the kinds observed in
+ * live responses, but Teachable documents `kind` as an unconstrained string and
+ * ships new values without notice. Never assume the list is complete — see
+ * {@link KNOWN_LECTURE_ATTACHMENT_KINDS} and {@link isKnownAttachmentKind}.
  *
  * **`pdf` vs `pdf_embed`** — both are PDF attachments backed by a CDN URL.
  * `pdf_embed` is returned when the PDF is rendered inline in the lecture player
  * rather than offered as a download. Observed returning `file_size: 0` and
  * `file_extension: "pdf"`. Treat the two kinds identically for content purposes.
+ *
+ * **`embed`** — third-party embedded content such as a YouTube video. Departs
+ * from the documented `name` behaviour: rather than being `null` for a non-file
+ * kind, `name` holds the original source URL the author pasted in, while `url`
+ * holds the provider's embeddable equivalent. `file_size` and `file_extension`
+ * are omitted from the response entirely rather than returned as `null`.
  *
  * **`text`** — contains raw HTML for `text`, `code_display`, and `code_embed` kinds.
  * Sanitise before rendering directly in a browser context.
