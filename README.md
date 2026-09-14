@@ -161,4 +161,4 @@ This SDK covers every GET endpoint in the Teachable v1 API and intentionally imp
 
 MIT — free to use, modify, and distribute.
 
-Built by [Tom Lorimer](https://purplehippo.co.uk) · [Purple Hippo Web Studio](https://purplehippo.io)
+Built by [Tom Lorimer](https://purplehippo.io) · [Purple Hippo Web Studio](https://purplehippo.io)
