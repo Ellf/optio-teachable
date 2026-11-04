@@ -3,7 +3,7 @@ import { CoursesAPI } from './courses';
 import { TransactionsAPI } from "./transactions";
 import { WebhooksAPI } from "./webhooks";
 import { PricingPlansAPI } from "./pricing_plans";
-import type { $ZodIssue } from '@zod/core';
+import type { core } from 'zod';
 
 /**
  * @module TeachableV1
@@ -94,7 +94,7 @@ export class TeachableV1 {
 
         if (!result.success) {
             throw new Error('Teachable API response did not match expected schema.\n' +
-                result.error.issues.map((i:$ZodIssue) => `  - ${i.path.join('.')}: ${i.message}`).join('\n')
+                result.error.issues.map((i: core.$ZodIssue) => `  - ${i.path.join('.')}: ${i.message}`).join('\n')
             );
         }
 
