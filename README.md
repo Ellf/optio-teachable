@@ -157,6 +157,20 @@ This SDK covers every GET endpoint in the Teachable v1 API and intentionally imp
 
 ---
 
+## Development
+
+```bash
+npm install
+npm test            # run the unit tests once
+npm run test:watch  # re-run the tests as you edit
+npm run typecheck   # type-check the source and the tests
+npm run build       # compile to dist/
+```
+
+The unit tests in `test/` use [Vitest](https://vitest.dev) and a fake `fetch`, so they need no API key and never call Teachable. The sample responses in `test/fixtures.ts` are made up. Don't add real school data to them.
+
+---
+
 ## License
 
 MIT — free to use, modify, and distribute.
